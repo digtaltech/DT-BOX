@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<meta charset="utf-8" />
+<title>WebSocket Test</title>
+<header>
+
+
+</header>
+
+<h2>WebSocket Test</h2>
+
+<div id="output"></div>
+
+
+<h2>Send client data</h2>
+
+<div id="input">
+<form onsubmit="return false">
+ <input id="message"><button type="submit" onclick="doSend(document.getElementById('message').value)">Send</button>
+</form>
+</div>
+<hr>
+<h2>Set client data</h2>
+
+<div id="input2">
+<form onsubmit="return false">
+ <input id="webData"><button type="submit" onclick="setWebClient(document.getElementById('webData').value)">Send</button>
+
+</form>
+</div>
+</html>
+
+<script language="javascript" type="text/javascript">
+        //var wsUri = "ws://127.0.0.1:9090/"
+	var wsUri = "ws://192.168.1.40:9090/"
+	var output;
+	var clientData;
+
+        function init() {
+		output = document.getElementById("output")
+		uWebSocket()
+	}
+
+        function uWebSocket() {
+		websocket = new WebSocket(wsUri);
+        	websocket.onopen = function(evt) {
+			onOpen(evt)
+		}
+	        websocket.onclose = function(evt) {
+			onClose(evt)
+		}
+		websocket.onmessage = function(evt) {
+			onMessage(evt)
+		}
+	        websocket.onerror = function(evt) {
+			onError(evt)
+		}
+	}
+
+        function onOpen(evt) {
+		writeToScreen("CONNECTED")
+		// doSend("Hi everybody!")
+	}
+
+        function onClose(evt) {
+		writeToScreen("DISCONNECTED")
+	}
+
+        function onMessage(evt) {
+		writeToScreen('<span style="color: blue;">RESPONSE: ' + evt.data+'')
+		console.log(evt.data)
+		//websocket.close()
+	}
+
+	function onError(evt) {
+		writeToScreen('<span style="color: red;">ERROR: ' + evt.data)
+	}
+
+	function doSend(message) {
+		// console.log(clientData)
+		writeToScreen("Mobile Send: " + message)
+		websocket.send(clientData)
+	}
+	function setWebClient(webData) {
+		var person = JSON.parse('{"id": 1, "address": ("192.168.1.40", 16004)}');
+		alert(person["id"])
+		clientData = (webData)
+		clientData = JSON.parse(clientData);
+		console.log(clientData['name'])
+		// writeToScreen("SENT: " + message)
+		websocket.send(person)
+	}
+
+	function writeToScreen(message) {
+
+		var pre = document.createElement("p")
+		pre.style.wordWrap = "break-word"
+		pre.innerHTML = message
+
+		output.appendChild(pre)
+	}
+
+	window.addEventListener("load", init, false)
+
+</script>

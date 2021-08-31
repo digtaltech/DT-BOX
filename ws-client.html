@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<meta charset="utf-8" />
+<title>WebSocket Test</title>
+<header>
+
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+	<script type="text/javascript" src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script>
+</header>
+
+<h2 class="text-center">DT BOX v.0.01</h2>
+<div class="container">
+	<div class="row">
+		<div class="col border">
+			<h2 class="text-center">QR</h2>
+			<input id="text" type="text" value="https://dt-box.com" class="form-control mb-3"/><br />
+			<div id="qrcode" ></div>
+
+		</div>
+		<div class="col border">
+			<h2 class="text-center">Data on Box</h2>
+			<div id="output-message"></div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col border">
+
+
+
+			<h2 class="text-center">Send data</h2>
+
+			<div id="input">
+				<form onsubmit="return false">
+					<input id="message" class="form-control mb-3"><button type="submit" onclick="doSend(document.getElementById('message').value)" class="btn btn-primary">Send</button>
+				</form>
+			</div>
+		</div>
+
+		<div class="col border">
+			<h2 class="text-center">Logs</h2>
+			<div id="output-log"></div>
+		</div>
+	</div>
+</div>
+
+
+</html>
+<script language="javascript" type="text/javascript">
+	//var wsUri = "ws://127.0.0.1:9090/"
+	var wsUri = "ws://192.168.1.40:9090/"
+	var output;
+	var output_message;
+	var client_id
+
+	function init() {
+		output = document.getElementById("output-log")
+		output_message = document.getElementById("output-message")
+		uWebSocket()
+	}
+
+	function uWebSocket() {
+		websocket = new WebSocket(wsUri);
+		websocket.onopen = function(evt) {
+			onOpen(evt)
+		}
+		websocket.onclose = function(evt) {
+			onClose(evt)
+		}
+		websocket.onmessage = function(evt) {
+			onMessage(evt)
+		}
+		websocket.onerror = function(evt) {
+			onError(evt)
+		}
+	}
+
+	function onOpen(evt) {
+		writeToScreen("CONNECTED")
+		// doSend("Hi everybody!")
+	}
+
+	function onClose(evt) {
+		writeToScreen("DISCONNECTED")
+	}
+
+	function onMessage(evt) {
+		writeToScreen('<span style="color: blue;">RESPONSE: ' + evt.data + '')
+		var data_response = JSON.parse(evt.data)
+		console.log("Web Client ID = " + data_response.web_id)
+		console.log(evt.data)
+		writeMessage('<span style="color: green;">RESPONSE: ' + data_response.data + '')
+
+		//websocket.close()
+	}
+
+	function onError(evt) {
+		writeToScreen('<span style="color: red;">ERROR: ' + evt.data)
+	}
+
+	function doSend(message) {
+		writeToScreen("SENT: " + message)
+		var data_send = JSON.parse(message)
+		writeMessage("SENT: " + data_send.data)
+		websocket.send(message)
+	}
+
+	function writeMessage(message) {
+
+		var pre = document.createElement("p")
+		pre.style.wordWrap = "break-word"
+		pre.innerHTML = message
+
+		output_message.appendChild(pre)
+	}
+
+	function writeToScreen(message) {
+
+		var pre = document.createElement("p")
+		pre.style.wordWrap = "break-word"
+		pre.innerHTML = message
+		output.appendChild(pre)
+	}
+
+	window.addEventListener("load", init, false)
+
+	// QR
+	var qrcode = new QRCode("qrcode");
+
+function makeCode () {
+  var elText = document.getElementById("text");
+
+  if (!elText.value) {
+    alert("Input a text");
+    elText.focus();
+    return;
+  }
+
+  qrcode.makeCode(elText.value);
+}
+
+makeCode();
+
+$("#text").
+  on("blur", function () {
+    makeCode();
+  }).
+  on("keydown", function (e) {
+    if (e.keyCode == 13) {
+      makeCode();
+    }
+  });
+</script>
