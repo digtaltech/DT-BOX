@@ -13,7 +13,7 @@
 	<div class="row">
 		<div class="col border">
 			<h2 class="text-center">QR</h2>
-			<input id="text" type="text" value="https://dt-box.com" class="form-control mb-3"/><br />
+			<input id="qr_data" type="text" value="https://dt-box.com" class="form-control mb-3"/><br />
 			<div id="qrcode" ></div>
 
 		</div>
@@ -75,33 +75,39 @@
 	}
 
 	function onOpen(evt) {
-		writeToScreen("CONNECTED")
+		writeToLogs("CONNECTED")
 		// doSend("Hi everybody!")
 	}
 
 	function onClose(evt) {
-		writeToScreen("DISCONNECTED")
+		writeToLogs("DISCONNECTED")
 	}
 
 	function onMessage(evt) {
-		writeToScreen('<span style="color: blue;">RESPONSE: ' + evt.data + '')
 		var data_response = JSON.parse(evt.data)
-		console.log("Web Client ID = " + data_response.web_id)
-		console.log(evt.data)
+		client_id = data_response.client_id
+		console.log(client_id)
+		writeToLogs('<span style="color: green;">Mobile Client ID = ' + data_response.client_id)
+		writeToLogs('<span style="color: blue;">RESPONSE: ' + evt.data + '')
+		// console.log("Web Client ID = " + data_response.web_id)
+		// console.log(evt.data)
+		qr_data.value = '{ "status": "debug", "web_id": '+data_response.web_id+', "client_id": 2, "data": "Wake the fuck up samurai !" }'
+		makeCode ()
 		writeMessage('<span style="color: green;">RESPONSE: ' + data_response.data + '')
 
 		//websocket.close()
 	}
 
 	function onError(evt) {
-		writeToScreen('<span style="color: red;">ERROR: ' + evt.data)
+		writeToLogs('<span style="color: red;">ERROR: ' + evt.data)
 	}
 
 	function doSend(message) {
-		writeToScreen("SENT: " + message)
-		var data_send = JSON.parse(message)
-		writeMessage("SENT: " + data_send.data)
-		websocket.send(message)
+		writeMessage("SENT: " + message)
+		var data_send = {"status": "debug", "web_id": client_id, "client_id": null, "data": message}
+		// var data_send = JSON.parse(message)
+		writeToLogs("SENT: " + JSON.stringify(data_send))
+		websocket.send(JSON.stringify(data_send))
 	}
 
 	function writeMessage(message) {
@@ -113,7 +119,7 @@
 		output_message.appendChild(pre)
 	}
 
-	function writeToScreen(message) {
+	function writeToLogs(message) {
 
 		var pre = document.createElement("p")
 		pre.style.wordWrap = "break-word"
@@ -127,7 +133,7 @@
 	var qrcode = new QRCode("qrcode");
 
 function makeCode () {
-  var elText = document.getElementById("text");
+  var elText = document.getElementById("qr_data");
 
   if (!elText.value) {
     alert("Input a text");
@@ -140,7 +146,7 @@ function makeCode () {
 
 makeCode();
 
-$("#text").
+$("#qr_data").
   on("blur", function () {
     makeCode();
   }).

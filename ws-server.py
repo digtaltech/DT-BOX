@@ -39,6 +39,7 @@ def message_received(client, server, message):
     # server.send_message(users, message)
     try:
         message_data = json.loads(message)
+        print(message_data)
         if(message_data["status"]) == "debug":
             for i in users.keys():
                 print(i)
