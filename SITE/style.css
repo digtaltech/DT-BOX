@@ -1,0 +1,142 @@
+body {
+  font-family: 'Rubik' !important;
+  /* zoom: 75% */
+  overflow-x: hidden;
+
+}
+
+.main_screen {
+   background-color: #2C7BE5;
+   height: 100vh;
+}
+
+.navbars {
+  align-items: center !important;
+  height: 100%;
+}
+
+.header-style {
+  background-color: #ffffff;
+  padding-left: 12rem;
+  padding-right: 12rem;
+  height: 5rem;
+  width: 100%;
+  border-radius:  0px 0px 20px 20px !important;
+}
+
+.main-content-style {
+  margin-top: 2rem;
+  border-radius: 1rem;
+  border: 2px solid white; /* Параметры границы */
+  background: #EDF2F9;
+  width: 100%;
+
+}
+
+.body_qr_scan {
+  padding-left: 12rem;
+  padding-right: 12rem;
+}
+
+.hs2 {
+  font-size: 2rem !important;
+  font-weight: 500 !important;
+  color: #283E59 !important;
+}
+
+.hs4 {
+  font-size: 24px !important;
+  font-weight: 500 !important;
+  color: #283E59 !important;
+}
+
+.hs5 {
+  width: 100%;
+  font-size: 24px !important;
+  font-weight: 400 !important;
+  color: #283E59 !important;
+}
+
+.hs6 {
+  width: 100%;
+  font-size: 24px !important;
+  font-weight: 400 !important;
+  color: white !important;
+}
+
+.help_ico {
+  width: 30px;
+}
+
+.question {
+  width: 500px;
+}
+
+.que_row {
+  width: 100%;
+}
+
+
+.ms_resp {
+  font-size: 20px !important;
+  font-weight: 400 !important;
+  color: #283E59 !important;
+}
+
+.ms_sent {
+  font-size: 20px !important;
+  font-weight: 400 !important;
+  color: #283E59 !important;
+}
+
+.btn_send {
+  background-color: #2C7BE5 !important;
+  font-size: 18px !important;
+  font-weight: 400 !important;
+}
+
+.logo {
+  height: 50px;
+}
+
+
+.first_line {
+  width: 100%
+}
+
+.qr_data_window {
+  padding: 1rem;
+}
+
+.message_data_window {
+  padding: 1rem !important;
+}
+
+.border-style {
+
+}
+
+.logs_dev {
+  display: none;
+}
+
+
+
+#qr_data{
+  display:none;
+}
+
+#qrcode img{
+  width: 80% !important;
+}
+
+#output-log {
+  /* width: 600px; */
+  height: 200px;
+  overflow: auto;
+}
+#output-message {
+  /* width: 600px; */
+  height: 400px;
+  overflow: auto;
+}

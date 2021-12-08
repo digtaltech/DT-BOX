@@ -47,7 +47,7 @@ def message_received(client, server, message):
                     print("We this")
                     server.send_message(users[i], json.dumps(message_data))
     except:
-        print("Ошибка декодировки ебать")
+        print("Error")
     # if(message) == "2":
     #     print(client)
     #     # print(server)
@@ -64,7 +64,12 @@ def message_received(client, server, message):
 
 
 PORT = 9090
-HOST = '192.168.1.40'
+# Prod
+HOST = '89.108.83.142'
+
+# Test
+# HOST = '192.168.1.40'
+
 server = WebsocketServer(PORT, host=HOST)
 server.set_fn_new_client(new_client)
 server.set_fn_client_left(client_left)
