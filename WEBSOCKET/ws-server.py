@@ -30,6 +30,7 @@ def message_received(client, server, message):
         message = message[:200] + '..'
     # print(message)
 
+
     # print("users = " + str(users))
     # users = client
     if(message) == "1":
@@ -65,12 +66,12 @@ def message_received(client, server, message):
 
 PORT = 9090
 # Prod
-HOST = '89.108.83.142'
+# HOST = '89.108.83.142'
 
 # Test
-# HOST = '192.168.1.40'
+HOST = '192.168.1.40'
 
-server = WebsocketServer(PORT, host=HOST)
+server = WebsocketServer(host=HOST, port=PORT)
 server.set_fn_new_client(new_client)
 server.set_fn_client_left(client_left)
 server.set_fn_message_received(message_received)
